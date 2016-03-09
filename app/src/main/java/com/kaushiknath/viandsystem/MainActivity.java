@@ -1,5 +1,6 @@
 package com.kaushiknath.viandsystem;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -9,14 +10,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.DriverPropertyInfo;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -29,6 +36,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,42 +56,79 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        final String url = "jdbc:aceql:http://192.168.55.1:9090/ServerSqlManager";
+        final String url = getIntent().getStringExtra("Name1");
+        //final String url = "jdbc:aceql:http://"+ip+":9090/ServerSqlManager";
         // The login info for strong authentication on server side.
         // These are *not* the username/password of the remote JDBC Driver,
         // but are the auth info checked by remote
         // CommonsConfigurator.login(username, password) method.
-        final String username = "username";
-        final String password = "password";
-        final TextView textView2 = (TextView) findViewById((R.id.textView3));
-        final TextView textView1 = (TextView) findViewById(R.id.textView2);
-        // Required for Android, optional for others environments:
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Class.forName("org.kawanfw.sql.api.client.RemoteDriver");    // Attempts to establish a connection to the remote database:
-                    textView2.setText("Class Connected");
-                } catch (Exception e) {
-                    textView2.setText("Class Not Found");
+        //final TextView textView2 = (TextView) findViewById((R.id.textView3));
+        //final TextView textView1 = (TextView) findViewById(R.id.textView2);
+
+        new MyTask().execute(url);
+
+    }
+
+    private class MyTask extends AsyncTask<String, Integer, java.sql.Connection> {
+
+        @Override
+        protected java.sql.Connection doInBackground(String... params) {
+
+            String url = params[0];
+
+            int flag = 0;
+            final String username = "username";
+            final String password = "password";
+            try {
+                Class.forName("org.kawanfw.sql.api.client.RemoteDriver");    // Attempts to establish a connection to the remote database:
+                //textView2.setText("Class Connected");
+            } catch (Exception e) {
+                //return "class Not recognized";
+            }
+            try {
+                java.sql.Connection connection = DriverManager.getConnection(url, username, password);
+                if (connection != null) {
+                    return connection;
                 }
-                try {
-                    java.sql.Connection connection = DriverManager.getConnection(url, username, password);
-                    textView1.setText("Connection with remote server established!");
-                    if (connection != null) {
-                        textView1.setText("Connection with remote server established!");
-                    }
-                } catch (Exception e) {
-                    textView1.setText("Connection with remote Driver Failed \n The error is " + e);
-                }
+            } catch (Exception e) {
+                //textView1.setText("Connection with remote Driver Failed \n The error is " + e + "\n The url is " + url);
 
             }
-        });
-        thread.start();
+            //if(flag == 1) return "Connected";
+            return null;
+        }
 
+        @Override
+        protected void onPostExecute(final java.sql.Connection connection) {
+            if (connection != null) {
+                Log.d("status", "I am Connected");
+                final TextView tv2 = (TextView) findViewById(R.id.textView2);
+                tv2.setText("Connection Established");
+                Thread thread1 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            PreparedStatement ps = connection.prepareStatement("select count(*) from info_table");
+                            final ResultSet rs = ps.executeQuery();
+                            while(rs.next()) {
+                                TextView tv3 = (TextView) findViewById(R.id.textView3);
+                                try {
+                                    Log.d("Count is", String.valueOf(rs.getInt("COUNT(*)")));
+                                }
+                                catch(Exception e){
+                                    Log.d("Error",e.toString());
+                                }
+                            }
 
-
+                        } catch (SQLException e) {
+                            //tv2.setText(e.toString());
+                        }
+                    }
+                });
+                thread1.start();
+                super.onPostExecute(connection);
+            }
+        }
     }
 
     @Override
