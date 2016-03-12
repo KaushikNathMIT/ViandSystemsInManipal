@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ViandSystem.iml" filepath="$PROJECT_DIR$/ViandSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ViandSystemsInManipal.iml" filepath="$PROJECT_DIR$/ViandSystemsInManipal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aceqlandroid/aceqlandroid.iml" filepath="$PROJECT_DIR$/aceqlandroid/aceqlandroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

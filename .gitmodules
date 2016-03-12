@@ -1,0 +1,3 @@
+[submodule "aceqlandroid"]
+	path = aceqlandroid
+	url = https://github.com/reubenjohn/aceqlandroid.git
