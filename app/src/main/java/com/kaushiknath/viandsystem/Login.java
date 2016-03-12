@@ -20,8 +20,7 @@ public class Login extends Activity {
         setContentView(R.layout.login);
 
         TextView tv1 = (TextView) findViewById(R.id.editText);
-        Button con = (Button) findViewById(R.id.button);
-        final String url = "jdbc:aceql:http://192.168.55.1:9090/ServerSqlManager";
+        final String url = "jdbc:aceql:http://"+tv1.getText()+":9090/ServerSqlManager";
         Button cont = (Button)findViewById(R.id.button);
         cont.setOnClickListener(new View.OnClickListener() {
             @Override

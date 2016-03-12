@@ -1,220 +1,160 @@
 package com.kaushiknath.viandsystem;
 
-import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import org.kawanfw.sql.api.client.android.AceQLDBManager;
+import org.kawanfw.sql.api.client.android.BackendConnection;
+import org.kawanfw.sql.api.client.android.OnGetResultSetListener;
+import org.kawanfw.sql.api.client.android.OnPrepareStatements;
 
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.DriverPropertyInfo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Driver {
+        implements NavigationView.OnNavigationItemSelectedListener {
+
+    //Gets the AceQL server URL to connect to
+    EditText serverURLView;
+    //Gets the SQL query to execute
+    EditText inputView;
+    //Tap it to execute query
+    Button executeB;
+    //It shows the results of the query or an error if it occurs
+    TextView outputView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+        //Find the view from the layout XML file
+        inputView = (EditText) findViewById(R.id.et_input);
+        serverURLView = (EditText) findViewById(R.id.et_server_url);
+        executeB = (Button) findViewById(R.id.b_execute);
+        outputView = (TextView) findViewById(R.id.tv_output);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        //Restore the previously entered values into the fields if any for those lazy folks
+        restoreInputConfiguration();
+
+        //This listener tells the database manager what kind of statements to execute
+        //We will be using this listener when the execute button is clicked
+        final OnPrepareStatements onPreparedStatementsListener = new OnPrepareStatements() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public PreparedStatement[] onGetPreparedStatementListener(BackendConnection remoteConnection) {
+                //Get the SQL query from the EditText view
+                String sql = inputView.getText().toString();
+                try {
+                    //Prepare it to an executable statement
+                    PreparedStatement preparedStatement = remoteConnection.prepareStatement(sql);
+
+                    //If you want to execute more than one statement at a time,
+                    //simply fill up successive array elements and return it:
+                    PreparedStatement[] preparedStatements = new PreparedStatement[1];
+                    preparedStatements[0] = preparedStatement;
+                    return preparedStatements;
+                } catch (SQLException e) {
+                    //Log and display any error that occurs
+                    e.printStackTrace();
+                    outputView.setText(getString(R.string.error_occured) + '\n' + e.getLocalizedMessage() + '\n' + getString(R.string.see_log));
+                    return null;
+                }
+            }
+        };
+        //This listener tells the database manager what to do when we receive the result of the query execution
+        //We will be using this listener when the execute button is clicked
+        final OnGetResultSetListener onGetResultSetListener = new OnGetResultSetListener() {
+            @Override
+            public void onGetResultSets(ResultSet[] resultSets, SQLException e) {
+                if (e != null) {
+                    //Log and display any error that occurs
+                    e.printStackTrace();
+                    outputView.setText(getString(R.string.error_occured) + '\n' + e.getLocalizedMessage() + '\n' + getString(R.string.see_log));
+                } else if (resultSets.length > 0) {
+                    //Since we executed only one query, the result will show up in index 0 of the array
+                    ResultSet rs = resultSets[0];
+
+                    int i = 0;
+                    try {
+                        //Build the output and display it in the TextView
+                        StringBuffer stringBuffer = new StringBuffer("First 5 rows:\n");
+                        while (rs.next() && i < 5) {//While there are rows and we still haven't displayed the first 5 rows
+                            i++;
+                            stringBuffer.append(rs.getString(1));
+                            stringBuffer.append('\n');
+                        }
+                        //Always close the Result set when your done
+                        rs.close();
+                        //Finally display the rows
+                        outputView.setText(stringBuffer);
+                    } catch (SQLException e1) {
+                        //Log and display any error that occurs
+                        e1.printStackTrace();
+                        outputView.setText(e1.getLocalizedMessage());
+                    }
+                } else {
+                    //This should never happen but if it does,
+                    //log and display it
+                    Log.e("Result", "Received no result sets from query");
+                    outputView.setText(getString(R.string.no_result_sets));
+                }
+            }
+        };
+
+        //Set what to do when the execute button is clicked
+        executeB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Let the user know that the process has begun
+                outputView.setText(getString(R.string.loading));
+
+                //If the URL has been edited, then we should reinitialize the AceQLDBManager with the new URL
+                String newURL = serverURLView.getText().toString();
+                String oldURL = AceQLDBManager.getServerUrl();
+                if (!newURL.equals(oldURL)) {
+                    //Null for any of the fields means that they wont be modified
+                    //This statement will also cause the connection to be reset meaning the next query might take a little longer
+                    AceQLDBManager.initialize(newURL, null, null);
+                }
+
+                //Save the query and url so that the user doesn't have to type it again next time.
+                saveInputConfigurations();
+
+                //Finally, execute the query by specifying what query (onPreparedStatementsListener),
+                //And what to do once we get the result
+                AceQLDBManager.executePreparedStatements(onPreparedStatementsListener, onGetResultSetListener);
             }
         });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        final String url = getIntent().getStringExtra("Name1");
-        //final String url = "jdbc:aceql:http://"+ip+":9090/ServerSqlManager";
-        // The login info for strong authentication on server side.
-        // These are *not* the username/password of the remote JDBC Driver,
-        // but are the auth info checked by remote
-        // CommonsConfigurator.login(username, password) method.
-        //final TextView textView2 = (TextView) findViewById((R.id.textView3));
-        //final TextView textView1 = (TextView) findViewById(R.id.textView2);
-
-        new MyTask().execute(url);
-
     }
 
-    private class MyTask extends AsyncTask<String, Integer, java.sql.Connection> {
-
-        @Override
-        protected java.sql.Connection doInBackground(String... params) {
-
-            String url = params[0];
-
-            int flag = 0;
-            final String username = "username";
-            final String password = "password";
-            try {
-                Class.forName("org.kawanfw.sql.api.client.RemoteDriver");    // Attempts to establish a connection to the remote database:
-                //textView2.setText("Class Connected");
-            } catch (Exception e) {
-                //return "class Not recognized";
-            }
-            try {
-                java.sql.Connection connection = DriverManager.getConnection(url, username, password);
-                if (connection != null) {
-                    return connection;
-                }
-            } catch (Exception e) {
-                //textView1.setText("Connection with remote Driver Failed \n The error is " + e + "\n The url is " + url);
-
-            }
-            //if(flag == 1) return "Connected";
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(final java.sql.Connection connection) {
-            if (connection != null) {
-                Log.d("status", "I am Connected");
-                final TextView tv2 = (TextView) findViewById(R.id.textView2);
-                tv2.setText("Connection Established");
-                Thread thread1 = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            PreparedStatement ps = connection.prepareStatement("select count(*) from info_table");
-                            final ResultSet rs = ps.executeQuery();
-                            while(rs.next()) {
-                                TextView tv3 = (TextView) findViewById(R.id.textView3);
-                                try {
-                                    Log.d("Count is", String.valueOf(rs.getInt("COUNT(*)")));
-                                }
-                                catch(Exception e){
-                                    Log.d("Error",e.toString());
-                                }
-                            }
-
-                        } catch (SQLException e) {
-                            //tv2.setText(e.toString());
-                        }
-                    }
-                });
-                thread1.start();
-                super.onPostExecute(connection);
-            }
-        }
+    private void saveInputConfigurations() {
+        SharedPreferences.Editor editor = getSharedPreferences("sharedPrefs", MODE_PRIVATE).edit();
+        editor.putString("sql", inputView.getText().toString());
+        editor.putString("url", serverURLView.getText().toString());
+        editor.apply();
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+    private void restoreInputConfiguration() {
+        SharedPreferences sp = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        String previousQuery = sp.getString("sql", null);
+        if (previousQuery != null)
+            inputView.setText(previousQuery);
+        String previousURL = sp.getString("url", null);
+        if (previousURL != null)
+            serverURLView.setText(previousURL);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camara) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    public boolean acceptsURL(String url) throws SQLException {
-        return false;
-    }
-
-    @Override
-    public java.sql.Connection connect(String url, Properties info) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public int getMajorVersion() {
-        return 0;
-    }
-
-    @Override
-    public int getMinorVersion() {
-        return 0;
-    }
-
-    @Override
-    public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
-        return new DriverPropertyInfo[0];
-    }
-
-    @Override
-    public boolean jdbcCompliant() {
         return false;
     }
 }
