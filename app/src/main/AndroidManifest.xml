@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Login"
+            android:name=".SelectionProcess"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
