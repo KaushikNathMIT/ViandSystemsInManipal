@@ -1,6 +1,7 @@
 package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ public class SelectionProcess extends Activity {
     Button executeB;
     //It shows the results of the query or an error if it occurs
     TextView outputView;
+    String[] res = new String[20];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class SelectionProcess extends Activity {
                     //If you want to execute more than one statement at a time,
                     //simply fill up successive array elements and return it:
                     PreparedStatement[] preparedStatements = new PreparedStatement[1];
-                    Log.e("Status","reached 1");
+                    Log.e("Status", "reached 1");
                     preparedStatements[0] = preparedStatement;
                     return preparedStatement;
                 } catch (SQLException e) {
@@ -75,16 +77,29 @@ public class SelectionProcess extends Activity {
                     try {
                         //Build the output and display it in the TextView
                         StringBuffer stringBuffer = new StringBuffer("First 5 rows:\n");
-                        while (resultSets.next() && i < 5) {//While there are rows and we still haven't displayed the first 5 rows
-                            i++;
+                        while (resultSets.next()) {//While there are rows and we still haven't displayed the first 5 rows
+                            //i++;
                             stringBuffer.append(resultSets.getString(1));
                             stringBuffer.append('\n');
+                            res[i] = resultSets.getString(1);
+                            Log.d("Length Here", Integer.toString(res[i].length()));
+                            i++;
                         }
-                        Log.e("Status","reached 2");
+                        Log.e("Status", "reached 2");
                         //Always close the Result set when your done
                         resultSets.close();
                         //Finally display the rows
                         outputView.setText(stringBuffer);
+
+                        Intent intent = new Intent(SelectionProcess.this, List.class);
+                        try {
+                            for (i = 0; i < 5; i++)
+                                Log.d("Length There", Integer.toString(res[i].length()));
+                        }
+                        catch(Exception e1){}
+                        intent.putExtra("res", res);
+                        startActivity(intent);
+
                     } catch (SQLException e1) {
                         //Log and display any error that occurs
                         e1.printStackTrace();
@@ -107,6 +122,7 @@ public class SelectionProcess extends Activity {
                 //Let the user know that the process has begun
                 outputView.setText(getString(R.string.loading));
                 AceQLDBManager.executeQuery(onGetPrepareStatements, onGetResultSetListener);
+
             }
         });
     }
