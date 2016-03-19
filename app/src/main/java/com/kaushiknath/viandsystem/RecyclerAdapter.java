@@ -1,10 +1,12 @@
 package com.kaushiknath.viandsystem;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Kaushik Nath on 19-Mar-16.
@@ -31,7 +33,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 //Intent intent = new Intent(itemView.getContext(),Main2Activity.class);
                 //itemView.getContext().startActivity(intent);
                 //returnPos(position);
-                tv.setText(((TextView) v).getText().toString());
+                //tv.setText(((TextView) v).getText().toString());
+
+                String s = ((TextView) v).getText().toString();
+                Log.d("selected", s);
+
             }
         });
         return viewHolder;

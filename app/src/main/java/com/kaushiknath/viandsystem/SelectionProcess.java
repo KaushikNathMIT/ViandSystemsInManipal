@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.kawanfw.sql.api.client.android.AceQLDBManager;
@@ -17,31 +19,50 @@ import org.kawanfw.sql.api.client.android.execute.query.OnGetResultSetListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kaushik Nath on 09-Mar-16.
  */
-public class SelectionProcess extends Activity {
-    EditText inputView;
+public class SelectionProcess extends Activity implements AdapterView.OnItemSelectedListener {
     //Tap it to execute query
     Button executeB;
     //It shows the results of the query or an error if it occurs
     TextView outputView;
     String[] res = new String[20];
+    String sql;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.slectionpro);
         outputView = (TextView) findViewById(R.id.tv_output);
-        inputView = (EditText) findViewById(R.id.et_input);
+        Spinner spinner = (Spinner) findViewById(R.id.spin);
+        spinner.setOnItemSelectedListener(this);
+
+        List<String> categories = new ArrayList<String>();
+        categories.add("restaurant");
+        categories.add("bakery");
+        categories.add("cafe");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
+
+
         final OnGetPrepareStatement onGetPrepareStatements = new OnGetPrepareStatement() {
             @Override
             public PreparedStatement onGetPreparedStatement(BackendConnection remoteConnection) {
                 //Get the SQL query from the EditText view
-                String sql = inputView.getText().toString();
                 try {
                     //Prepare it to an executable statement
+                    Log.d("Sql Query", sql);
                     PreparedStatement preparedStatement = remoteConnection.prepareStatement(sql);
 
                     //If you want to execute more than one statement at a time,
@@ -91,7 +112,7 @@ public class SelectionProcess extends Activity {
                         //Finally display the rows
                         outputView.setText(stringBuffer);
 
-                        Intent intent = new Intent(SelectionProcess.this, List.class);
+                        Intent intent = new Intent(SelectionProcess.this, T_List.class);
                         try {
                             for (i = 0; i < 5; i++)
                                 Log.d("Length There", Integer.toString(res[i].length()));
@@ -125,5 +146,15 @@ public class SelectionProcess extends Activity {
 
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        sql = "select name from info_table where Category like '"+parent.getItemAtPosition(position).toString()+"%'";
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
