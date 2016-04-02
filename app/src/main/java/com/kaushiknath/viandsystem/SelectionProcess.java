@@ -33,6 +33,7 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
     TextView outputView;
     String[] res = new String[20];
     int[] range = new int[20];
+    float[] ran = new float[20];
     String sql;
     EditText rate;
 
@@ -110,6 +111,7 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
                             stringBuffer.append('\n');
                             res[i] = resultSets.getString(1);
                             range[i] = resultSets.getInt(2);
+                            ran[i] = resultSets.getFloat(3);
                             Log.d("Length Here", Integer.toString(res[i].length()));
                             i++;
                         }
@@ -129,6 +131,7 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
                         intent.putExtra("res", res);
                         intent.putExtra("Number", length);
                         intent.putExtra("Rates", range);
+                        intent.putExtra("Ran", ran);
                         startActivity(intent);
 
                     } catch (SQLException e1) {
@@ -160,7 +163,7 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        sql = "select name,range from info_table natural join services natural join home_delivery " +
+        sql = "select name,range,h_d_radius from info_table natural join services natural join home_delivery " +
                 "where Category like '"+parent.getItemAtPosition(position).toString()+"' " +
                 "and range <=" + Integer.parseInt(rate.getText().toString());
     }

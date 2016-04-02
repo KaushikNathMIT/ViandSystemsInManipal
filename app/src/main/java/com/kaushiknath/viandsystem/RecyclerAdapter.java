@@ -14,10 +14,12 @@ import android.widget.TextView;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private String[] dataSource;
     private int[] rates;
+    private float[] ran;
 
-    public RecyclerAdapter(String[] dataArgs, int[] rates) {
+    public RecyclerAdapter(String[] dataArgs, int[] rates, float[] ran) {
         dataSource = dataArgs;
         this.rates = rates;
+        this.ran = ran;
     }
 
     @Override
@@ -27,7 +29,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 .inflate(R.layout.item, parent, false);
 
         final ViewHolder viewHolder = new ViewHolder(view);
-        viewHolder.textView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Intent intent = new Intent(itemView.getContext(),Main2Activity.class);
@@ -35,7 +37,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 //returnPos(position);
                 //tv.setText(((TextView) v).getText().toString());
                 Intent intent = new Intent(v.getContext(), DetailedInfo.class);
-                intent.putExtra("Selected", ((TextView) v).getText().toString());
+                TextView textView = (TextView) v.findViewById(R.id.list_item);
+                intent.putExtra("Selected", textView.getText().toString());
                 v.getContext().startActivity(intent);
 
             }
@@ -54,6 +57,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         protected TextView textView;
         protected TextView textView1;
+        protected TextView textView2;
         //public ClipData.Item currentItem;
         int position;
 
@@ -61,6 +65,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.list_item);
             textView1 = (TextView) itemView.findViewById(R.id.rate111);
+            textView2 = (TextView) itemView.findViewById(R.id.ran);
         }
     }
 
@@ -68,6 +73,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textView.setText(dataSource[position]);
         holder.textView1.setText(Integer.toString(rates[position])) ;
+        holder.textView2.setText(Float.toString(ran[position]));
     }
 
 }

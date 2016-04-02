@@ -32,6 +32,7 @@ public class T_List extends AppCompatActivity {
         int length = getIntent().getIntExtra("Number",0);
         String dataArray1[] = getIntent().getStringArrayExtra("res");
         int rates[] = getIntent().getIntArrayExtra("Rates");
+        float ran[] = getIntent().getFloatArrayExtra("Ran");
 
         String[] dataArray = new String[length];
         int i;
@@ -46,7 +47,7 @@ public class T_List extends AppCompatActivity {
         recyclerView.setHasFixedSize(false);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerAdapter(dataArray, rates);
+        adapter = new RecyclerAdapter(dataArray, rates, ran);
         recyclerView.setAdapter(adapter);
 
     }
