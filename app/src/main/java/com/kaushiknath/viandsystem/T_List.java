@@ -14,6 +14,7 @@ import android.widget.Toast;
 /**
  * Created by Kaushik Nath on 19-Mar-16.
  */
+
 public class T_List extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -28,8 +29,15 @@ public class T_List extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        int length = getIntent().getIntExtra("Number",0);
+        String dataArray1[] = getIntent().getStringArrayExtra("res");
+        int rates[] = getIntent().getIntArrayExtra("Rates");
 
-        String dataArray[] = getIntent().getStringArrayExtra("res");
+        String[] dataArray = new String[length];
+        int i;
+        for(i=0;i<length;i++) {
+            dataArray[i]=dataArray1[i];
+        }
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -38,8 +46,15 @@ public class T_List extends AppCompatActivity {
         recyclerView.setHasFixedSize(false);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerAdapter(dataArray, textView);
+        adapter = new RecyclerAdapter(dataArray, rates);
         recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void onBackPressed(){
+        finish();
+        super.onBackPressed();
 
     }
 

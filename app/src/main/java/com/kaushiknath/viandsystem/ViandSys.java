@@ -11,7 +11,7 @@ public class ViandSys extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        final String url = "jdbc:aceql:http://192.168.55.1:9090/ServerSqlManager";
+        final String url = "jdbc:aceql:http://192.168.0.100:9090/ServerSqlManager";
         AceQLDBManager.initialize(url, "username", "password");
     }
 }

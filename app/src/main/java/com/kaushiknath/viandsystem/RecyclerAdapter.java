@@ -1,23 +1,23 @@
 package com.kaushiknath.viandsystem;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Created by Kaushik Nath on 19-Mar-16.
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private String[] dataSource;
-    private TextView tv;
+    private int[] rates;
 
-    public RecyclerAdapter(String[] dataArgs, TextView textView) {
+    public RecyclerAdapter(String[] dataArgs, int[] rates) {
         dataSource = dataArgs;
-        tv = textView;
+        this.rates = rates;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(view);
+        final ViewHolder viewHolder = new ViewHolder(view);
         viewHolder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,9 +34,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 //itemView.getContext().startActivity(intent);
                 //returnPos(position);
                 //tv.setText(((TextView) v).getText().toString());
-
-                String s = ((TextView) v).getText().toString();
-                Log.d("selected", s);
+                Intent intent = new Intent(v.getContext(), DetailedInfo.class);
+                intent.putExtra("Selected", ((TextView) v).getText().toString());
+                v.getContext().startActivity(intent);
 
             }
         });
@@ -53,23 +53,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         protected TextView textView;
+        protected TextView textView1;
         //public ClipData.Item currentItem;
         int position;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.list_item);
-
+            textView1 = (TextView) itemView.findViewById(R.id.rate111);
         }
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textView.setText(dataSource[position]);
-    }
-
-    public static int returnPos(int position) {
-        return position;
+        holder.textView1.setText(Integer.toString(rates[position])) ;
     }
 
 }

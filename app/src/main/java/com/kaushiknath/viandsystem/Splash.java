@@ -33,7 +33,7 @@ public class Splash extends Activity {
                 } finally {
 
                     startActivity(new Intent(Splash.this,
-                            SelectionProcess.class));
+                            MainActivity.class));
                     finish();
                 }
             }

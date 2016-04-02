@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,7 +32,9 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
     //It shows the results of the query or an error if it occurs
     TextView outputView;
     String[] res = new String[20];
+    int[] range = new int[20];
     String sql;
+    EditText rate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,9 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
 
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
+
+        rate = (EditText) findViewById(R.id.rateval);
+
 
 
         final OnGetPrepareStatement onGetPrepareStatements = new OnGetPrepareStatement() {
@@ -103,9 +109,11 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
                             stringBuffer.append(resultSets.getString(1));
                             stringBuffer.append('\n');
                             res[i] = resultSets.getString(1);
+                            range[i] = resultSets.getInt(2);
                             Log.d("Length Here", Integer.toString(res[i].length()));
                             i++;
                         }
+                        int length = i;
                         Log.e("Status", "reached 2");
                         //Always close the Result set when your done
                         resultSets.close();
@@ -119,6 +127,8 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
                         }
                         catch(Exception e1){}
                         intent.putExtra("res", res);
+                        intent.putExtra("Number", length);
+                        intent.putExtra("Rates", range);
                         startActivity(intent);
 
                     } catch (SQLException e1) {
@@ -150,7 +160,9 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        sql = "select name from info_table where Category like '"+parent.getItemAtPosition(position).toString()+"%'";
+        sql = "select name,range from info_table natural join services natural join home_delivery " +
+                "where Category like '"+parent.getItemAtPosition(position).toString()+"' " +
+                "and range <=" + Integer.parseInt(rate.getText().toString());
     }
 
     @Override
