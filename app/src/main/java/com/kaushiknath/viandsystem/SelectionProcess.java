@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.kawanfw.sql.api.client.android.AceQLDBManager;
 import org.kawanfw.sql.api.client.android.BackendConnection;
@@ -30,18 +31,18 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
     //Tap it to execute query
     Button executeB;
     //It shows the results of the query or an error if it occurs
-    TextView outputView;
+    //TextView outputView;
     String[] res = new String[20];
     int[] range = new int[20];
     float[] ran = new float[20];
     String sql;
     EditText rate;
+    String sel_cat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.slectionpro);
-        outputView = (TextView) findViewById(R.id.tv_output);
         Spinner spinner = (Spinner) findViewById(R.id.spin);
         spinner.setOnItemSelectedListener(this);
 
@@ -60,6 +61,17 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
         spinner.setAdapter(dataAdapter);
 
         rate = (EditText) findViewById(R.id.rateval);
+
+        Button rich = (Button) findViewById(R.id.button);
+        rich.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                rate.setText(Integer.toString(10000));
+                rate.setEnabled(false);
+            }
+        });
+
+
 
 
 
@@ -81,7 +93,7 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
                 } catch (SQLException e) {
                     //Log and display any error that occurs
                     e.printStackTrace();
-                    outputView.setText(getString(R.string.error_occured) + '\n' + "this" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log));
+                    Toast.makeText(getApplicationContext(), (getString(R.string.error_occured) + '\n' + "this" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log)),Toast.LENGTH_LONG);
                     return null;
                 }
             }
@@ -95,7 +107,7 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
                 if (e != null) {
                     //Log and display any error that occurs
                     e.printStackTrace();
-                    outputView.setText(getString(R.string.error_occured) + '\n' + "that" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log));
+                    Toast.makeText(getApplicationContext(), (getString(R.string.error_occured) + '\n' + "that" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log)), Toast.LENGTH_LONG);
                     Log.e("Status", "reached 3");
                 } else if (true) {
                     //Since we executed only one query, the result will show up in index 0 of the array
@@ -104,11 +116,11 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
                     int i = 0;
                     try {
                         //Build the output and display it in the TextView
-                        StringBuffer stringBuffer = new StringBuffer("First 5 rows:\n");
+                        //StringBuffer stringBuffer = new StringBuffer("First 5 rows:\n");
                         while (resultSets.next()) {//While there are rows and we still haven't displayed the first 5 rows
                             //i++;
-                            stringBuffer.append(resultSets.getString(1));
-                            stringBuffer.append('\n');
+                            //stringBuffer.append(resultSets.getString(1));
+                            //stringBuffer.append('\n');
                             res[i] = resultSets.getString(1);
                             range[i] = resultSets.getInt(2);
                             ran[i] = resultSets.getFloat(3);
@@ -120,7 +132,7 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
                         //Always close the Result set when your done
                         resultSets.close();
                         //Finally display the rows
-                        outputView.setText(stringBuffer);
+                        //outputView.setText(stringBuffer);
 
                         Intent intent = new Intent(SelectionProcess.this, T_List.class);
                         try {
@@ -137,15 +149,15 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
                     } catch (SQLException e1) {
                         //Log and display any error that occurs
                         e1.printStackTrace();
-                        outputView.setText(e1.getLocalizedMessage());
+                        Toast.makeText(getApplicationContext(), (e1.getLocalizedMessage()), Toast.LENGTH_LONG);
                         Log.e("Status", "reached 11");
                     }
-                } else {
+                } /*else {
                     //This should never happen but if it does,
                     //log and display it
                     Log.e("Result", "Received no result sets from query");
                     outputView.setText(getString(R.string.no_result_sets));
-                }
+                }*/
             }
         };
         executeB = (Button) findViewById(R.id.b_execute);
@@ -154,19 +166,25 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
             @Override
             public void onClick(View v) {
                 //Let the user know that the process has begun
-                outputView.setText(getString(R.string.loading));
+                Toast.makeText(getApplicationContext(), (getString(R.string.loading)), Toast.LENGTH_LONG);
+                sql = "select name,range,h_d_radius from info_table natural join services natural join home_delivery " +
+                        "where Category like '"+sel_cat+"' " +
+                        "and range <=" + Integer.parseInt(rate.getText().toString());
                 AceQLDBManager.executeQuery(onGetPrepareStatements, onGetResultSetListener);
 
             }
         });
     }
 
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        sql = "select name,range,h_d_radius from info_table natural join services natural join home_delivery " +
-                "where Category like '"+parent.getItemAtPosition(position).toString()+"' " +
-                "and range <=" + Integer.parseInt(rate.getText().toString());
+
+        sel_cat = parent.getItemAtPosition(position).toString();
+
     }
+
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {

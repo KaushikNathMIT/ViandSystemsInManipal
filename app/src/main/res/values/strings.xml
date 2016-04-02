@@ -22,4 +22,5 @@
     <string name="ask_for_amount">How Much Money do u Have on your Pocket</string>
     <string name="amount_in_rs">Amount in Rs.</string>
     <string name="details">Details of Hotels to be mentioned Here</string>
+    <string name="enough_money">I am Rich.</string>
 </resources>
