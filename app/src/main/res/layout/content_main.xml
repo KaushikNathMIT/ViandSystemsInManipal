@@ -13,8 +13,11 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/server_url_label"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:text="@string/pc_url"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="52dp" />
 
     <EditText
         android:id="@+id/et_server_url"
@@ -23,8 +26,9 @@
         android:hint="@string/server_url_hint"
         android:inputType="textMultiLine"
         android:text="@string/server_url_default"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true" />
+        android:layout_above="@+id/b_login"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="54dp" />
 
 
     <Button
@@ -35,5 +39,14 @@
         android:text="Login"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/goselproc"
+        android:id="@+id/sel_proc_button"
+        android:layout_below="@+id/b_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="74dp" />
 
 </RelativeLayout>

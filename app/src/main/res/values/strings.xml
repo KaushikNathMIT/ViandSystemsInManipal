@@ -10,7 +10,7 @@
     <string name="execute">Search</string>
     <string name="loading">Loading…</string>
     <string name="sql_query_label">SQL Query</string>
-    <string name="server_url_label">Server URL</string>
+    <string name="pc_url">Enter url for connecting to the Viand System database</string>
     <string name="server_url_hint">It is usually of the form:\n jdbc:aceql:http://server_ip_here:9090/ServerSqlManager</string>
     <string name="server_url_default">jdbc:aceql:http://192.168.0.100:9090/ServerSqlManager</string>
     <string name="error_occured">An error occurred: </string>
@@ -28,4 +28,6 @@
     <string name="fbhname">I have already chosen where to eat.</string>
     <string name="danc">Developers and Contributors</string>
     <string name="video">Have a tutorial on how this app works</string>
+    <string name="pref_hotel">Please enter the any number of consecutive letters of your Preffered Hotel. If you remember the full name then you can type the full name</string>
+    <string name="goselproc">Find a hotel</string>
 </resources>

@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity
     EditText serverURLView;
     //Gets the SQL query to execute
     //Tap it to execute query
-    Button loginB;
+    Button loginB, spButton;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     int hd =0 ;
@@ -41,12 +41,15 @@ public class MainActivity extends AppCompatActivity
             public boolean onNavigationItemSelected(MenuItem item) {
                 int id = item.getItemId();
 
-                if(id == R.id.login){
+                if (id == R.id.login) {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                }
-                else if (id == R.id.hodel){
+                } else if (id == R.id.hodel) {
                     Toast.makeText(getApplicationContext(), "Only Hotels with home delivery option will be showed", Toast.LENGTH_LONG);
                     hd = 1;
+                } else if (id == R.id.fbname) {
+                    Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                    intent.putExtra("val", hd);
+                    startActivity(intent);
                 }
 
                 return false;
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity
         //Find the view from the layout XML file
         serverURLView = (EditText) findViewById(R.id.et_server_url);
         loginB = (Button) findViewById(R.id.b_login);
+        spButton = (Button) findViewById(R.id.sel_proc_button);
 
         //Restore the previously entered values into the fields if any for those lazy folks
         restoreInputConfiguration();
@@ -83,11 +87,20 @@ public class MainActivity extends AppCompatActivity
 
                 //Save the query and url so that the user doesn't have to type it again next time.
                 saveInputConfigurations();
+            }
+        });
+
+        spButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SelectionProcess.class);
                 intent.putExtra("val",hd);
                 startActivity(intent);
             }
         });
+
+
     }
 
     private void saveInputConfigurations() {
