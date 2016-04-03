@@ -2,23 +2,29 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_camara" android:icon="@android:drawable/ic_menu_camera"
-            android:title="Import" />
-        <item android:id="@+id/nav_gallery" android:icon="@android:drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item android:id="@+id/nav_slideshow" android:icon="@android:drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item android:id="@+id/nav_manage" android:icon="@android:drawable/ic_menu_manage"
-            android:title="Tools" />
+        <item
+            android:id="@+id/login"
+            android:icon="@drawable/login"
+            android:title="@string/admin_login" />
+    </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/hodel"
+            android:title="@string/homdel" />
+        <item
+            android:id="@+id/fbname"
+            android:title="@string/fbhname" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item android:id="@+id/nav_share" android:icon="@android:drawable/ic_menu_share"
-                android:title="Share" />
-            <item android:id="@+id/nav_send" android:icon="@android:drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/dandc"
+            android:title="@string/danc" />
+        <item
+            android:id="@+id/vid"
+            android:icon="@android:drawable/presence_video_online"
+            android:title="@string/video" />
+    </group>
 
 </menu>

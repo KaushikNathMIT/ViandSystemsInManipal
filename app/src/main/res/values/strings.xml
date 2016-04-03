@@ -23,4 +23,9 @@
     <string name="amount_in_rs">Amount in Rs.</string>
     <string name="details">Details of Hotels to be mentioned Here</string>
     <string name="enough_money">I am Rich.</string>
+    <string name="admin_login">Admin_Login</string>
+    <string name="homdel">I want to stay at my home</string>
+    <string name="fbhname">I have already chosen where to eat.</string>
+    <string name="danc">Developers and Contributors</string>
+    <string name="video">Have a tutorial on how this app works</string>
 </resources>

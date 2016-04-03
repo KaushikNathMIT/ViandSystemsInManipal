@@ -36,13 +36,18 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
     int[] range = new int[20];
     float[] ran = new float[20];
     String sql;
+    StringBuffer sqlbuffer = new StringBuffer("");
     EditText rate;
     String sel_cat;
+    int hd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.slectionpro);
+
+        hd = getIntent().getIntExtra("val",0);
+
         Spinner spinner = (Spinner) findViewById(R.id.spin);
         spinner.setOnItemSelectedListener(this);
 
@@ -167,9 +172,14 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
             public void onClick(View v) {
                 //Let the user know that the process has begun
                 Toast.makeText(getApplicationContext(), (getString(R.string.loading)), Toast.LENGTH_LONG);
-                sql = "select name,range,h_d_radius from info_table natural join services natural join home_delivery " +
+                sqlbuffer.equals("");
+                sqlbuffer.append("select name,range,h_d_radius from info_table natural join services natural join home_delivery " +
                         "where Category like '"+sel_cat+"' " +
-                        "and range <=" + Integer.parseInt(rate.getText().toString());
+                        "and range <=" + Integer.parseInt(rate.getText().toString()));
+                if(hd == 1){
+                    sqlbuffer.append(" and h_d_radius > 0");
+                }
+                sql = sqlbuffer.toString();
                 AceQLDBManager.executeQuery(onGetPrepareStatements, onGetResultSetListener);
 
             }

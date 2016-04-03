@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import org.kawanfw.sql.api.client.android.AceQLDBManager;
 
@@ -20,11 +23,38 @@ public class MainActivity extends AppCompatActivity
     //Gets the SQL query to execute
     //Tap it to execute query
     Button loginB;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    int hd =0 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        NavigationView nv = (NavigationView) findViewById(R.id.nav_view);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                int id = item.getItemId();
+
+                if(id == R.id.login){
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
+                else if (id == R.id.hodel){
+                    Toast.makeText(getApplicationContext(), "Only Hotels with home delivery option will be showed", Toast.LENGTH_LONG);
+                    hd = 1;
+                }
+
+                return false;
+            }
+        });
+
+        mDrawerLayout.closeDrawers();
+
 
         //Find the view from the layout XML file
         serverURLView = (EditText) findViewById(R.id.et_server_url);
@@ -53,7 +83,9 @@ public class MainActivity extends AppCompatActivity
 
                 //Save the query and url so that the user doesn't have to type it again next time.
                 saveInputConfigurations();
-                startActivity(new Intent(MainActivity.this, SelectionProcess.class));
+                Intent intent = new Intent(MainActivity.this, SelectionProcess.class);
+                intent.putExtra("val",hd);
+                startActivity(intent);
             }
         });
     }
