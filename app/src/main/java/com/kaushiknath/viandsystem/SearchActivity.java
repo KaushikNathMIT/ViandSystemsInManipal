@@ -25,9 +25,9 @@ public class SearchActivity extends Activity {
     Button executeB;
     //It shows the results of the query or an error if it occurs
     //TextView outputView;
-    String[] res = new String[20];
-    int[] range = new int[20];
-    float[] ran = new float[20];
+    String[] res = new String[30];
+    int[] range = new int[30];
+    float[] ran = new float[30];
     String sql;
     int hd;
 

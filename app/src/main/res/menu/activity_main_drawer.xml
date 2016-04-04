@@ -14,7 +14,7 @@
             android:icon="@android:drawable/checkbox_off_background"/>
         <item
             android:id="@+id/change_ip"
-            android:title="@string/ch_ip" />
+            android:title="@string/icip" />
 
 
         <item

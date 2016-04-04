@@ -49,6 +49,8 @@ public class ServerConnect extends Activity {
 
                 //Save the query and url so that the user doesn't have to type it again next time.
                 saveInputConfigurations();
+
+                onBackPressed();
             }
         });
     }

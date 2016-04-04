@@ -1,15 +1,21 @@
 package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.kawanfw.sql.api.client.android.AceQLDBManager;
 import org.kawanfw.sql.api.client.android.BackendConnection;
 import org.kawanfw.sql.api.client.android.execute.OnGetPrepareStatement;
 import org.kawanfw.sql.api.client.android.execute.query.OnGetResultSetListener;
+import org.w3c.dom.Text;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +26,6 @@ import java.sql.SQLException;
  */
 public class DetailedInfo extends Activity {
     String sql;
-    TextView outputView;
 
 
     @Override
@@ -28,14 +33,16 @@ public class DetailedInfo extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.det_info);
 
-        outputView = (TextView) findViewById(R.id.textView5);
         TextView sel = (TextView) findViewById(R.id.sel_hotel);
         String se = getIntent().getStringExtra("Selected");
         sel.setText(se);
 
-        sql = "select rating from info_table " +
-                "where name like '" + se + "'";
+        sql = "select rating,loc_name,pincode from info_table natural join loc_table natural join whereabouts " +
+                "where name = '" + se + "'";
         final RatingBar rating = (RatingBar) findViewById(R.id.ratingBar);
+        final TextView location = (TextView) findViewById(R.id.loca);
+        final TextView pincode = (TextView) findViewById(R.id.pc);
+        final Button order = (Button) findViewById(R.id.order_button);
 
         final OnGetPrepareStatement onGetPrepareStatements = new OnGetPrepareStatement() {
             @Override
@@ -55,7 +62,7 @@ public class DetailedInfo extends Activity {
                 } catch (SQLException e) {
                     //Log and display any error that occurs
                     e.printStackTrace();
-                    outputView.setText(getString(R.string.error_occured) + '\n' + "this" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log));
+                   Toast.makeText(getApplicationContext(), getString(R.string.error_occured) + '\n' + "this" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log), Toast.LENGTH_LONG).show();
                     return null;
                 }
             }
@@ -69,41 +76,37 @@ public class DetailedInfo extends Activity {
                 if (e != null) {
                     //Log and display any error that occurs
                     e.printStackTrace();
-                    outputView.setText(getString(R.string.error_occured) + '\n' + "that" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log));
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_occured) + '\n' + "that" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log), Toast.LENGTH_LONG).show();
                     Log.e("Status", "reached 3");
                 } else if (true) {
-                    //Since we executed only one query, the result will show up in index 0 of the array
-                    //ResultSet rs = resultSets[0];
 
                     int i = 0;
                     try {
                         //Build the output and display it in the TextView
                         StringBuffer stringBuffer = new StringBuffer("Number Of Stars:\n");
 
-                        while (resultSets.next()) {//While there are rows and we still haven't displayed the first 5 rows
-                            //i++;
+                        while (resultSets.next()) {
                             rating.setRating(resultSets.getFloat(1));
+                            rating.getProgressDrawable().setColorFilter(Color.parseColor("#0064A8"), PorterDuff.Mode.SRC_ATOP);
                             rating.setEnabled(false);
-                            stringBuffer.append(resultSets.getString(1));
-                            stringBuffer.append('\n');
+                            location.setText(location.getText().toString() + " : " + resultSets.getString(2));
+                            pincode.setText(pincode.getText().toString() + " : " + resultSets.getInt(3));
+                            Log.d("pincode", pincode.getText().toString());
                         }
                         int length = i;
                         Log.e("Status", "reached 2");
-                        //Always close the Result set when your done
                         resultSets.close();
-                        //Finally display the rows
-                        outputView.setText(stringBuffer);
 
                     } catch (SQLException e1) {
                         //Log and display any error that occurs
                         e1.printStackTrace();
-                        outputView.setText(e1.getLocalizedMessage());
+                        Toast.makeText(getApplicationContext(), e1.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                         Log.e("Status", "reached 11");
                     }
                 }
             }
         };
-        outputView.setText(getString(R.string.loading));
+        Toast.makeText(getApplicationContext(), getString(R.string.loading), Toast.LENGTH_LONG).show();
         AceQLDBManager.executeQuery(onGetPrepareStatements, onGetResultSetListener);
 
     }
