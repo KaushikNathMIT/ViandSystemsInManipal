@@ -36,7 +36,7 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
     int[] range = new int[20];
     float[] ran = new float[20];
     String sql;
-    StringBuffer sqlbuffer = new StringBuffer("");
+
     EditText rate;
     String sel_cat;
     int hd;
@@ -172,7 +172,7 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
             public void onClick(View v) {
                 //Let the user know that the process has begun
                 Toast.makeText(getApplicationContext(), (getString(R.string.loading)), Toast.LENGTH_LONG);
-                sqlbuffer.equals("");
+                StringBuffer sqlbuffer = new StringBuffer("");
                 sqlbuffer.append("select name,range,h_d_radius from info_table natural join services natural join home_delivery " +
                         "where Category like '"+sel_cat+"' " +
                         "and range <=" + Integer.parseInt(rate.getText().toString()));

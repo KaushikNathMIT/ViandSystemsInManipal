@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity
                 if (id == R.id.login) {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 } else if (id == R.id.hodel) {
-                    Toast.makeText(getApplicationContext(), "Only Hotels with home delivery option will be showed", Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(), R.string.hd_sel, Toast.LENGTH_LONG).show();
                     hd = 1;
                 } else if (id == R.id.fbname) {
                     Intent intent = new Intent(MainActivity.this, SearchActivity.class);

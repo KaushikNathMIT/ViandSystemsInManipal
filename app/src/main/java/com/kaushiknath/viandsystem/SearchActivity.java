@@ -29,7 +29,6 @@ public class SearchActivity extends Activity {
     int[] range = new int[20];
     float[] ran = new float[20];
     String sql;
-    StringBuffer sqlbuffer = new StringBuffer("");
     int hd;
 
     @Override
@@ -128,7 +127,7 @@ public class SearchActivity extends Activity {
             public void onClick(View v) {
                 //Let the user know that the process has begun
                 Toast.makeText(getApplicationContext(), (getString(R.string.loading)), Toast.LENGTH_LONG);
-                sqlbuffer.equals("");
+                StringBuffer sqlbuffer = new StringBuffer("");
                 sqlbuffer.append("select name,range,h_d_radius from info_table natural join services natural join home_delivery " +
                         "where name like '%" + hotser.getText() + "%'");
                 if (hd == 1) {

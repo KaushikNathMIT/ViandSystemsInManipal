@@ -78,11 +78,12 @@ public class DetailedInfo extends Activity {
                     int i = 0;
                     try {
                         //Build the output and display it in the TextView
-                        StringBuffer stringBuffer = new StringBuffer("First 5 rows:\n");
+                        StringBuffer stringBuffer = new StringBuffer("Number Of Stars:\n");
 
                         while (resultSets.next()) {//While there are rows and we still haven't displayed the first 5 rows
                             //i++;
-                            rating.setNumStars((int) resultSets.getFloat(1));
+                            rating.setRating(resultSets.getFloat(1));
+                            rating.setEnabled(false);
                             stringBuffer.append(resultSets.getString(1));
                             stringBuffer.append('\n');
                         }
@@ -99,11 +100,6 @@ public class DetailedInfo extends Activity {
                         outputView.setText(e1.getLocalizedMessage());
                         Log.e("Status", "reached 11");
                     }
-                } else {
-                    //This should never happen but if it does,
-                    //log and display it
-                    Log.e("Result", "Received no result sets from query");
-                    outputView.setText(getString(R.string.no_result_sets));
                 }
             }
         };

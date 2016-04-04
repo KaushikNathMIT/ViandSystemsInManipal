@@ -30,4 +30,13 @@
     <string name="video">Have a tutorial on how this app works</string>
     <string name="pref_hotel">Please enter the any number of consecutive letters of your Preffered Hotel. If you remember the full name then you can type the full name</string>
     <string name="goselproc">Find a hotel</string>
+    <string name="log_cred">Please Enter your Login Credentials</string>
+    <string name="login_hint">Enter your user name here</string>
+    <string name="log_admin">Login as Administrator</string>
+    <string name="orig_uname">Kaushik</string>
+    <string name="orig_pass">dbms</string>
+    <string name="auth_err">UserName and Password not found. Please try gain</string>
+    <string name="log_succ">Login successful</string>
+    <string name="hd_sel">Only Hotels with home delivery option will be showed</string>
+    <string name="staff">Do you want to know about staff ?</string>
 </resources>
