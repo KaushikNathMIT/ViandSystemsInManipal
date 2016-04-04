@@ -9,44 +9,23 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:showIn="@layout/app_bar_main"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pc_url"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="52dp" />
 
-    <EditText
-        android:id="@+id/et_server_url"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/server_url_hint"
-        android:inputType="textMultiLine"
-        android:text="@string/server_url_default"
-        android:layout_above="@+id/b_login"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="54dp" />
-
-
-    <Button
-        android:id="@+id/b_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Login"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/goselproc"
         android:id="@+id/sel_proc_button"
-        android:layout_below="@+id/b_login"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="74dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fbhname"
+        android:id="@+id/fbname"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>

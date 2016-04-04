@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="all">
         <item
             android:id="@+id/login"
             android:icon="@drawable/login"
             android:title="@string/admin_login" />
-    </group>
-    <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/hodel"
-            android:title="@string/homdel" />
+            android:title="@string/homdel"
+            android:checkable="true"
+            android:icon="@android:drawable/checkbox_off_background"/>
         <item
-            android:id="@+id/fbname"
-            android:title="@string/fbhname" />
-    </group>
+            android:id="@+id/change_ip"
+            android:title="@string/ch_ip" />
 
-    <group android:checkableBehavior="single">
 
         <item
             android:id="@+id/dandc"
