@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.kawanfw.sql.api.client.android.AceQLDBManager;
 
@@ -46,6 +47,8 @@ public class ServerConnect extends Activity {
                     //This statement will also cause the connection to be reset meaning the next query might take a little longer
                     AceQLDBManager.initialize(newURL, null, null);
                 }
+                Toast.makeText(getApplicationContext(), ("New url initialized"+newURL),Toast.LENGTH_LONG).show();
+
 
                 //Save the query and url so that the user doesn't have to type it again next time.
                 saveInputConfigurations();
