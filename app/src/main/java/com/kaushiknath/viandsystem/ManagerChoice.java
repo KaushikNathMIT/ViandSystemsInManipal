@@ -19,6 +19,7 @@ import java.util.List;
 public class ManagerChoice extends Activity implements AdapterView.OnItemSelectedListener{
 
     String sel_name;
+    int ida = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -52,13 +53,22 @@ public class ManagerChoice extends Activity implements AdapterView.OnItemSelecte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         sel_name = parent.getItemAtPosition(position).toString();
-        Intent intent = new Intent(ManagerChoice.this,Staff.class);
-        intent.putExtra("sel_name",sel_name);
-        startActivity(intent);
+        if(ida == 1) {
+            Intent intent = new Intent(ManagerChoice.this, StaffTransport.class);
+            intent.putExtra("sel_name", sel_name);
+            startActivity(intent);
+        }
+        ida =1;
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

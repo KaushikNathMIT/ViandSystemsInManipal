@@ -39,6 +39,7 @@
     <string name="log_succ">Login successful</string>
     <string name="hd_sel">Only Hotels with home delivery option will be showed</string>
     <string name="staff">Do you want to know about staff ?</string>
+    <string name="transport">Do you want to know about Transport ?</string>
     <string name="hd_sel_n">Hotels with both home delivery and non Home Delivery option will be showed</string>
     <string name="icip">Initialize / Change IP</string>
 </resources>

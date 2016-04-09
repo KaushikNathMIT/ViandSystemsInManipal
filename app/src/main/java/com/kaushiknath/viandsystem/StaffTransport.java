@@ -1,6 +1,8 @@
 package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -16,28 +18,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by Kaushik Nath on 4/8/2016.
+ * Created by Kaushik Nath on 4/4/2016.
  */
-public class OrderContact extends Activity {
+public class StaffTransport extends Activity {
     String sql;
-    TextView land_no;
-    TextView mob_no;
-    TextView email_id;
-    TextView credc;
-    TextView debc;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cont_info);
+        setContentView(R.layout.staff_trans);
+        String sel_name = getIntent().getStringExtra("sel_name");
+        TextView sel_hot_name = (TextView) findViewById(R.id.sta_text);
+        sel_hot_name.setText(sel_name);
 
-        sql = getIntent().getStringExtra("sql_q2");
-        mob_no = (TextView) findViewById(R.id.mob);
-        land_no = (TextView) findViewById(R.id.ll);
-        email_id = (TextView) findViewById(R.id.eid);
-        credc = (TextView) findViewById(R.id.cdc);
-        debc = (TextView) findViewById(R.id.debc);
+        sql = "select * from info_table natural join services natural join transport natural join staff where name like '" + sel_name + "'";
 
         final OnGetPrepareStatement onGetPrepareStatements = new OnGetPrepareStatement() {
             @Override
@@ -62,6 +56,8 @@ public class OrderContact extends Activity {
                 }
             }
         };
+        //This listener tells the database manager what to do when we receive the result of the query execution
+        //We will be using this listener when the execute button is clicked
 
         final OnGetResultSetListener onGetResultSetListener = new OnGetResultSetListener() {
             @Override
@@ -79,13 +75,13 @@ public class OrderContact extends Activity {
                         StringBuffer stringBuffer = new StringBuffer("Number Of Stars:\n");
 
                         while (resultSets.next()) {
-                            mob_no.setText(mob_no.getText() + ":" + resultSets.getLong(3));
-                            mob_no.setEnabled(false);
-                            land_no.setText(land_no.getText().toString() + " : " + resultSets.getLong(4));
-                            email_id.setText(email_id.getText().toString() + " : " + resultSets.getString(5));
-                            debc.setText(debc.getText().toString() + " : " + resultSets.getString(14));
-                            credc.setText(credc.getText().toString() + " : " + resultSets.getString(13));
-                            Log.d("email_id", email_id.getText().toString());
+                            /*rating.setRating(resultSets.getFloat(1));
+                            rating.getProgressDrawable().setColorFilter(Color.parseColor("#0064A8"), PorterDuff.Mode.SRC_ATOP);
+                            rating.setEnabled(false);
+                            location.setText(location.getText().toString() + " : " + resultSets.getString(2));
+                            pincode.setText(pincode.getText().toString() + " : " + resultSets.getInt(3));
+                            Log.d("pincode", pincode.getText().toString());*/
+                            Log.d("result last",resultSets.getString(11));
                         }
                         int length = i;
                         Log.e("Status", "reached 2");
@@ -100,8 +96,9 @@ public class OrderContact extends Activity {
                 }
             }
         };
-
         Toast.makeText(getApplicationContext(), getString(R.string.loading), Toast.LENGTH_LONG).show();
         AceQLDBManager.executeQuery(onGetPrepareStatements, onGetResultSetListener);
+
+
     }
 }

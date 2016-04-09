@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +16,6 @@ import org.kawanfw.sql.api.client.android.AceQLDBManager;
 import org.kawanfw.sql.api.client.android.BackendConnection;
 import org.kawanfw.sql.api.client.android.execute.OnGetPrepareStatement;
 import org.kawanfw.sql.api.client.android.execute.query.OnGetResultSetListener;
-import org.w3c.dom.Text;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +25,7 @@ import java.sql.SQLException;
  * Created by Kaushik Nath on 4/2/2016.
  */
 public class DetailedInfo extends Activity {
-    String sql,se;
+    String sql, se;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +61,7 @@ public class DetailedInfo extends Activity {
                 } catch (SQLException e) {
                     //Log and display any error that occurs
                     e.printStackTrace();
-                   Toast.makeText(getApplicationContext(), getString(R.string.error_occured) + '\n' + "this" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_occured) + '\n' + "this" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log), Toast.LENGTH_LONG).show();
                     return null;
                 }
             }
@@ -110,13 +108,13 @@ public class DetailedInfo extends Activity {
         Toast.makeText(getApplicationContext(), getString(R.string.loading), Toast.LENGTH_LONG).show();
         AceQLDBManager.executeQuery(onGetPrepareStatements, onGetResultSetListener);
 
-        order.setOnClickListener(new View.OnClickListener(){
+        order.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetailedInfo.this,OrderContact.class);
-                String sql_q2 = "select * from contact natural join info_table where name like '"+ se + "'";
-                intent.putExtra("sql_q2",sql_q2);
+                Intent intent = new Intent(DetailedInfo.this, OrderContact.class);
+                String sql_q2 = "select * from contact natural join info_table natural join services natural join payment_option where name like '" + se + "'";
+                intent.putExtra("sql_q2", sql_q2);
                 startActivity(intent);
             }
         });

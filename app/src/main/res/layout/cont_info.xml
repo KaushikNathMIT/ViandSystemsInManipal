@@ -39,4 +39,33 @@
         android:id="@+id/con_info"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Payment_Option"
+        android:id="@+id/pop"
+        android:layout_below="@+id/eid"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="58dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Credit Card"
+        android:id="@+id/cdc"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Debit Card"
+        android:id="@+id/debc"
+        android:layout_below="@+id/cdc"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
