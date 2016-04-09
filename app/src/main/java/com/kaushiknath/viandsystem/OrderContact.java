@@ -1,15 +1,8 @@
 package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,34 +10,30 @@ import org.kawanfw.sql.api.client.android.AceQLDBManager;
 import org.kawanfw.sql.api.client.android.BackendConnection;
 import org.kawanfw.sql.api.client.android.execute.OnGetPrepareStatement;
 import org.kawanfw.sql.api.client.android.execute.query.OnGetResultSetListener;
-import org.w3c.dom.Text;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by Kaushik Nath on 4/2/2016.
+ * Created by Kaushik Nath on 4/8/2016.
  */
-public class DetailedInfo extends Activity {
-    String sql,se;
+public class OrderContact extends Activity {
+    String sql;
+    TextView land_no;
+    TextView mob_no;
+    TextView email_id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.det_info);
+        setContentView(R.layout.cont_info);
 
-        TextView sel = (TextView) findViewById(R.id.sel_hotel);
-        se = getIntent().getStringExtra("Selected");
-        sel.setText(se);
-
-        sql = "select rating,loc_name,pincode from info_table natural join loc_table natural join whereabouts " +
-                "where name = '" + se + "'";
-        final RatingBar rating = (RatingBar) findViewById(R.id.ratingBar);
-        final TextView location = (TextView) findViewById(R.id.loca);
-        final TextView pincode = (TextView) findViewById(R.id.pc);
-        final Button order = (Button) findViewById(R.id.order_button);
-
+        sql = getIntent().getStringExtra("sql_q2");
+        mob_no = (TextView) findViewById(R.id.mob);
+        land_no = (TextView) findViewById(R.id.ll);
+        email_id = (TextView) findViewById(R.id.eid);
         final OnGetPrepareStatement onGetPrepareStatements = new OnGetPrepareStatement() {
             @Override
             public PreparedStatement onGetPreparedStatement(BackendConnection remoteConnection) {
@@ -63,13 +52,11 @@ public class DetailedInfo extends Activity {
                 } catch (SQLException e) {
                     //Log and display any error that occurs
                     e.printStackTrace();
-                   Toast.makeText(getApplicationContext(), getString(R.string.error_occured) + '\n' + "this" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_occured) + '\n' + "this" + e.getLocalizedMessage() + '\n' + getString(R.string.see_log), Toast.LENGTH_LONG).show();
                     return null;
                 }
             }
         };
-        //This listener tells the database manager what to do when we receive the result of the query execution
-        //We will be using this listener when the execute button is clicked
 
         final OnGetResultSetListener onGetResultSetListener = new OnGetResultSetListener() {
             @Override
@@ -87,12 +74,11 @@ public class DetailedInfo extends Activity {
                         StringBuffer stringBuffer = new StringBuffer("Number Of Stars:\n");
 
                         while (resultSets.next()) {
-                            rating.setRating(resultSets.getFloat(1));
-                            rating.getProgressDrawable().setColorFilter(Color.parseColor("#0064A8"), PorterDuff.Mode.SRC_ATOP);
-                            rating.setEnabled(false);
-                            location.setText(location.getText().toString() + " : " + resultSets.getString(2));
-                            pincode.setText(pincode.getText().toString() + " : " + resultSets.getInt(3));
-                            Log.d("pincode", pincode.getText().toString());
+                            mob_no.setText(mob_no.getText() + ":" + resultSets.getLong(2));
+                            mob_no.setEnabled(false);
+                            land_no.setText(land_no.getText().toString() + " : " + resultSets.getLong(3));
+                            email_id.setText(email_id.getText().toString() + " : " + resultSets.getString(4));
+                            Log.d("email_id", email_id.getText().toString());
                         }
                         int length = i;
                         Log.e("Status", "reached 2");
@@ -107,20 +93,8 @@ public class DetailedInfo extends Activity {
                 }
             }
         };
+
         Toast.makeText(getApplicationContext(), getString(R.string.loading), Toast.LENGTH_LONG).show();
         AceQLDBManager.executeQuery(onGetPrepareStatements, onGetResultSetListener);
-
-        order.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailedInfo.this,OrderContact.class);
-                String sql_q2 = "select * from contact natural join info_table where name like '"+ se + "'";
-                intent.putExtra("sql_q2",sql_q2);
-                startActivity(intent);
-            }
-        });
-
     }
-
 }
