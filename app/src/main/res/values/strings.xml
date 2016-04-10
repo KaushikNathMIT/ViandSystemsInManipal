@@ -42,4 +42,8 @@
     <string name="transport">Do you want to know about Transport ?</string>
     <string name="hd_sel_n">Hotels with both home delivery and non Home Delivery option will be showed</string>
     <string name="icip">Initialize / Change IP</string>
+    <string name="enh">Enter the name of the hotel</string>
+    <string name="eidh">Enter ID here</string>
+    <string name="ech">Enter Catgory here (restaurant,bakery,cafe)</string>
+    <string name="erh">Enter the minimum range here</string>
 </resources>

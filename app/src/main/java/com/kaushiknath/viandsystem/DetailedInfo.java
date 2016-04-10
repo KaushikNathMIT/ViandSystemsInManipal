@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +43,17 @@ public class DetailedInfo extends Activity {
         final TextView location = (TextView) findViewById(R.id.loca);
         final TextView pincode = (TextView) findViewById(R.id.pc);
         final Button order = (Button) findViewById(R.id.order_button);
+
+        SwipeRefreshLayout sr4 = (SwipeRefreshLayout) findViewById(R.id.sr4);
+
+        sr4.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
 
         final OnGetPrepareStatement onGetPrepareStatements = new OnGetPrepareStatement() {
             @Override

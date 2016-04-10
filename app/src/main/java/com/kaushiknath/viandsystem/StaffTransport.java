@@ -1,9 +1,11 @@
 package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import java.sql.SQLException;
  */
 public class StaffTransport extends Activity {
     String sql;
+    TextView mgr,wai,che,ste;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,21 @@ public class StaffTransport extends Activity {
         TextView sel_hot_name = (TextView) findViewById(R.id.sta_text);
         sel_hot_name.setText(sel_name);
 
+        SwipeRefreshLayout sr3 = (SwipeRefreshLayout) findViewById(R.id.sr3);
+
+        sr3.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
+
+        mgr = (TextView) findViewById(R.id.mgr);
+        wai = (TextView) findViewById(R.id.wai);
+        che = (TextView) findViewById(R.id.che);
+        ste = (TextView) findViewById(R.id.ste);
         sql = "select * from info_table natural join services natural join transport natural join staff where name like '" + sel_name + "'";
 
         final OnGetPrepareStatement onGetPrepareStatements = new OnGetPrepareStatement() {
@@ -72,16 +90,12 @@ public class StaffTransport extends Activity {
                     int i = 0;
                     try {
                         //Build the output and display it in the TextView
-                        StringBuffer stringBuffer = new StringBuffer("Number Of Stars:\n");
 
                         while (resultSets.next()) {
-                            /*rating.setRating(resultSets.getFloat(1));
-                            rating.getProgressDrawable().setColorFilter(Color.parseColor("#0064A8"), PorterDuff.Mode.SRC_ATOP);
-                            rating.setEnabled(false);
-                            location.setText(location.getText().toString() + " : " + resultSets.getString(2));
-                            pincode.setText(pincode.getText().toString() + " : " + resultSets.getInt(3));
-                            Log.d("pincode", pincode.getText().toString());*/
-                            Log.d("result last",resultSets.getString(11));
+                            mgr.setText(mgr.getText().toString() + " : " + resultSets.getString(11));
+                            wai.setText(wai.getText().toString() + " : " + resultSets.getInt(12));
+                            che.setText(che.getText().toString() + " : " + resultSets.getInt(13));
+                            ste.setText(ste.getText().toString() + " : " + resultSets.getInt(14));
                         }
                         int length = i;
                         Log.e("Status", "reached 2");
@@ -98,7 +112,5 @@ public class StaffTransport extends Activity {
         };
         Toast.makeText(getApplicationContext(), getString(R.string.loading), Toast.LENGTH_LONG).show();
         AceQLDBManager.executeQuery(onGetPrepareStatements, onGetResultSetListener);
-
-
     }
 }

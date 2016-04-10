@@ -3,6 +3,7 @@ package com.kaushiknath.viandsystem;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,6 +35,15 @@ public class ManagerChoice extends Activity implements AdapterView.OnItemSelecte
 
         Spinner spinner = (Spinner) findViewById(R.id.spin_name);
         spinner.setOnItemSelectedListener(this);
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton.animate();
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ManagerChoice.this,AddHotel.class));
+            }
+        });
 
         List<String> categories = new ArrayList<String>();
         for(int i=0;i<length;i++) {

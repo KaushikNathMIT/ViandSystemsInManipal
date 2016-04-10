@@ -1,6 +1,8 @@
 package com.kaushiknath.viandsystem;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,14 +21,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 /**
  * Created by Kaushik Nath on 19-Mar-16.
  */
 
 public class T_List extends AppCompatActivity {
-    String[] res = new String[20];
-    int[] range = new int[20];
-    float[] ran = new float[20];
+    String[] res = new String[40];
+    int[] range = new int[40];
+    float[] ran = new float[40];
     String sql;
     int length;
 
@@ -44,6 +47,17 @@ public class T_List extends AppCompatActivity {
 
         sql = getIntent().getStringExtra("sql_q");
         Log.d("sql_query  is", sql);
+
+        SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.sr1);
+
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
 
         final OnGetPrepareStatement onGetPrepareStatements = new OnGetPrepareStatement() {
             @Override

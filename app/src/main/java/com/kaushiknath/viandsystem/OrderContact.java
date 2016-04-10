@@ -1,7 +1,9 @@
 package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,17 @@ public class OrderContact extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cont_info);
+
+        SwipeRefreshLayout sr2 = (SwipeRefreshLayout) findViewById(R.id.sr2);
+
+        sr2.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
 
         sql = getIntent().getStringExtra("sql_q2");
         mob_no = (TextView) findViewById(R.id.mob);
@@ -80,7 +93,6 @@ public class OrderContact extends Activity {
 
                         while (resultSets.next()) {
                             mob_no.setText(mob_no.getText() + ":" + resultSets.getLong(3));
-                            mob_no.setEnabled(false);
                             land_no.setText(land_no.getText().toString() + " : " + resultSets.getLong(4));
                             email_id.setText(email_id.getText().toString() + " : " + resultSets.getString(5));
                             debc.setText(debc.getText().toString() + " : " + resultSets.getString(14));
