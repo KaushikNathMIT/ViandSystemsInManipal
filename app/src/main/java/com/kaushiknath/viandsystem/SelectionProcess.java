@@ -73,7 +73,7 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
                 //Let the user know that the process has begun
                 Toast.makeText(getApplicationContext(), (getString(R.string.loading)), Toast.LENGTH_LONG).show();
                 StringBuffer sqlbuffer = new StringBuffer("");
-                sqlbuffer.append("select name,range,h_d_radius from info_table natural join services natural join home_delivery natural join payment_option " +
+                sqlbuffer.append("select name,range,h_d_radius,category from info_table natural join services natural join home_delivery natural join payment_option " +
                         "where Category like '" + sel_cat + "' " +
                         "and range <=" + Integer.parseInt(rate.getText().toString()));
                 if (hd == 1) {

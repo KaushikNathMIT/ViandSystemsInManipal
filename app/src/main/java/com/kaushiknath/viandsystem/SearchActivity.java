@@ -47,7 +47,7 @@ public class SearchActivity extends Activity {
                 //Let the user know that the process has begun
                 Toast.makeText(getApplicationContext(), (getString(R.string.loading)), Toast.LENGTH_LONG).show();
                 StringBuffer sqlbuffer = new StringBuffer("");
-                sqlbuffer.append("select name,range,h_d_radius from info_table natural join services natural join home_delivery " +
+                sqlbuffer.append("select name,range,h_d_radius,category from info_table natural join services natural join home_delivery " +
                         "where name like '%" + hotser.getText() + "%'");
                 if (hd == 1) {
                     sqlbuffer.append(" and h_d_radius > 0");
