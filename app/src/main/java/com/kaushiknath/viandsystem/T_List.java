@@ -115,6 +115,7 @@ public class T_List extends AppCompatActivity {
                         }
                         length = i;
                         Log.e("Status", "reached 2");
+                        Toast.makeText(getApplicationContext(),"No hotel available as per your budget", Toast.LENGTH_LONG).show();
                         //Toast.makeText(getApplicationContext(), "Actual Length" + Integer.toString(length),Toast.LENGTH_SHORT).show();
                         //Always close the Result set when your done
                         resultSets.close();

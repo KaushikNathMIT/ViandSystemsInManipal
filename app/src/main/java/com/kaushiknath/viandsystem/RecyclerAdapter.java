@@ -67,8 +67,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textView.setText(dataSource[position]);
-        holder.textView1.setText(Integer.toString(rates[position]));
-        holder.textView2.setText(Float.toString(ran[position]));
+        holder.textView1.setText("Approximate Budget :" + Integer.toString(rates[position]));
+        holder.textView2.setText("Delivery within :" + Float.toString(ran[position]) + "km");
         String ca = cat[position];
         Log.d("Category", ca);
         if (ca.equals("cafe"))

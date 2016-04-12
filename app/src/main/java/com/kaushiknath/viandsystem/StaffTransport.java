@@ -2,8 +2,6 @@ package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -24,7 +22,7 @@ import java.sql.SQLException;
  */
 public class StaffTransport extends Activity {
     String sql;
-    TextView mgr,wai,che,ste;
+    TextView mgr, wai, che, ste, vans, bikes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +47,11 @@ public class StaffTransport extends Activity {
         wai = (TextView) findViewById(R.id.wai);
         che = (TextView) findViewById(R.id.che);
         ste = (TextView) findViewById(R.id.ste);
+        vans = (TextView) findViewById(R.id.vans);
+        bikes = (TextView) findViewById(R.id.bikes);
+
         sql = "select * from info_table natural join services natural join transport natural join staff where name like '" + sel_name + "'";
+
 
         final OnGetPrepareStatement onGetPrepareStatements = new OnGetPrepareStatement() {
             @Override
@@ -96,6 +98,8 @@ public class StaffTransport extends Activity {
                             wai.setText(wai.getText().toString() + " : " + resultSets.getInt(12));
                             che.setText(che.getText().toString() + " : " + resultSets.getInt(13));
                             ste.setText(ste.getText().toString() + " : " + resultSets.getInt(14));
+                            vans.setText(vans.getText().toString() + " : " + resultSets.getInt(9));
+                            bikes.setText(bikes.getText().toString() + " : " + resultSets.getInt(10));
                         }
                         int length = i;
                         Log.e("Status", "reached 2");

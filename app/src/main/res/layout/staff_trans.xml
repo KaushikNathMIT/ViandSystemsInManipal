@@ -27,7 +27,7 @@
             android:layout_marginTop="54dp"
             android:text="Manager"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/wai"
@@ -37,7 +37,7 @@
             android:layout_below="@+id/mgr"
             android:text="Waiters"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/che"
@@ -47,7 +47,7 @@
             android:layout_below="@+id/wai"
             android:text="Chefs"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/ste"
@@ -57,7 +57,26 @@
             android:layout_below="@+id/che"
             android:text="Stewards"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/vans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ste"
+            android:text="No. of vans"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="30sp" />
+        <TextView
+            android:id="@+id/bikes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/vans"
+            android:text="No. of bikes"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="30sp" />
     </RelativeLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>
