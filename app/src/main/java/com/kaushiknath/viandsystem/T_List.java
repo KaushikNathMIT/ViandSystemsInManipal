@@ -33,6 +33,7 @@ public class T_List extends AppCompatActivity {
     float[] ran = new float[40];
     String[] cat = new String[40];
     String[] bma = new String[40];
+    String[] tim = new String[40];
     String sql;
     int length;
 
@@ -116,6 +117,7 @@ public class T_List extends AppCompatActivity {
                             ran[i] = resultSets.getFloat(3);
                             cat[i] = resultSets.getString(4);
                             bma[i] = resultSets.getString(5);
+                            tim[i] = resultSets.getString(6);
                             Log.d("Length Here", Integer.toString(res[i].length()));
                             i++;
                         }
@@ -170,7 +172,7 @@ public class T_List extends AppCompatActivity {
             dataArray[i] = res[i];
         }
 
-        adapter = new RecyclerAdapter(getApplicationContext(), dataArray, range, ran, cat, bma);
+        adapter = new RecyclerAdapter(getApplicationContext(), dataArray, range, ran, cat, bma, tim);
         recyclerView.setAdapter(adapter);
 
         //Toast.makeText(getApplicationContext(), Integer.toString(dataArray.length), Toast.LENGTH_LONG).show();

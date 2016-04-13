@@ -21,13 +21,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private String[] dataSource;
     private String[] cat;
     private String[] bma;
+    private String[] tim;
     private int[] rates;
     private float[] ran;
 
-    public RecyclerAdapter(Context context, String[] dataArgs, int[] rates, float[] ran, String cat[], String bma[]) {
+    public RecyclerAdapter(Context context, String[] dataArgs, int[] rates, float[] ran, String cat[], String bma[], String tim[]) {
         dataSource = dataArgs;
         this.rates = rates;
         this.ran = ran;
+        this.tim = tim;
         this.cat = cat;
         this.bma = bma;
         this.context = context;
@@ -71,7 +73,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.textView.setText(dataSource[position]);
         holder.textView1.setText("Approximate Budget :" + Integer.toString(rates[position]));
         holder.textView2.setText("Delivery within :" + Float.toString(ran[position]) + "km");
-        holder.dma.setText(holder.dma.getText().toString() + ":" +bma[position]);
+        holder.dma.setText(holder.dma.getText().toString() + ":" + bma[position]);
+        holder.timi.setText(holder.timi.getText().toString() + ":" + tim[position]);
         String ca = cat[position];
         Log.d("Category", ca);
         if (ca.equals("cafe"))
@@ -91,6 +94,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         protected TextView textView2;
         protected ImageView imageView;
         protected TextView dma;
+        protected TextView timi;
         //public ClipData.Item currentItem;
         int position;
 
@@ -101,6 +105,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             textView2 = (TextView) itemView.findViewById(R.id.ran);
             imageView = (ImageView) itemView.findViewById(R.id.imageView2);
             dma = (TextView) itemView.findViewById(R.id.bma);
+            timi = (TextView) itemView.findViewById(R.id.timi);
         }
     }
 

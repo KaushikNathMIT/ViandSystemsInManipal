@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity
                 } else if (id == R.id.dandc) {
                     startActivity(new Intent(MainActivity.this, Developer.class));
                 }
+                else if(id == R.id.vid){
+                    startActivity(new Intent(MainActivity.this,VideoV.class));
+                }
 
                 return false;
             }

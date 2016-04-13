@@ -26,7 +26,7 @@ import java.sql.SQLException;
  */
 public class LoginActivity extends AppCompatActivity {
     String sql;
-    String[] res = new String[30];
+    String[] res = new String[40];
     int length;
 
     protected void onCreate(Bundle savedInstanceState) {
