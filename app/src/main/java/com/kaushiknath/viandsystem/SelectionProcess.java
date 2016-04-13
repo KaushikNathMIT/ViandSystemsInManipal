@@ -2,7 +2,10 @@ package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,7 +20,7 @@ import java.util.List;
 /**
  * Created by Kaushik Nath on 09-Mar-16.
  */
-public class SelectionProcess extends Activity implements AdapterView.OnItemSelectedListener {
+public class SelectionProcess extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     //Tap it to execute query
     Button executeB;
     //It shows the results of the query or an error if it occurs
@@ -35,6 +38,11 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
         setContentView(R.layout.slectionpro);
 
         hd = getIntent().getIntExtra("val", 0);
+
+        setTitleColor(Color.parseColor("#ffffff"));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_1);
+        setSupportActionBar(toolbar);
 
         Spinner spinner = (Spinner) findViewById(R.id.spin);
         spinner.setOnItemSelectedListener(this);
@@ -73,7 +81,7 @@ public class SelectionProcess extends Activity implements AdapterView.OnItemSele
                 //Let the user know that the process has begun
                 Toast.makeText(getApplicationContext(), (getString(R.string.loading)), Toast.LENGTH_LONG).show();
                 StringBuffer sqlbuffer = new StringBuffer("");
-                sqlbuffer.append("select name,range,h_d_radius,category from info_table natural join services natural join home_delivery natural join payment_option " +
+                sqlbuffer.append("select name,range,h_d_radius,category,min_amt from info_table natural join services natural join home_delivery natural join payment_option " +
                         "where Category like '" + sel_cat + "' " +
                         "and range <=" + Integer.parseInt(rate.getText().toString()));
                 if (hd == 1) {

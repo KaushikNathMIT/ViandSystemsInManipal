@@ -2,8 +2,11 @@ package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,13 +23,14 @@ import java.sql.SQLException;
 /**
  * Created by Kaushik Nath on 4/8/2016.
  */
-public class OrderContact extends Activity {
+public class OrderContact extends AppCompatActivity {
     String sql;
     TextView land_no;
     TextView mob_no;
     TextView email_id;
     TextView credc;
     TextView debc;
+    TextView bop;
 
 
     @Override
@@ -35,6 +39,12 @@ public class OrderContact extends Activity {
         setContentView(R.layout.cont_info);
 
         SwipeRefreshLayout sr2 = (SwipeRefreshLayout) findViewById(R.id.sr2);
+
+        setTitle("Contact and Service Details");
+        setTitleColor(Color.parseColor("#ffffff"));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_1);
+        setSupportActionBar(toolbar);
 
         sr2.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -51,6 +61,7 @@ public class OrderContact extends Activity {
         email_id = (TextView) findViewById(R.id.eid);
         credc = (TextView) findViewById(R.id.cdc);
         debc = (TextView) findViewById(R.id.debc);
+        bop = (TextView) findViewById(R.id.bop);
 
         final OnGetPrepareStatement onGetPrepareStatements = new OnGetPrepareStatement() {
             @Override
@@ -97,6 +108,7 @@ public class OrderContact extends Activity {
                             email_id.setText(email_id.getText().toString() + " : " + resultSets.getString(5));
                             debc.setText(debc.getText().toString() + " : " + resultSets.getString(14));
                             credc.setText(credc.getText().toString() + " : " + resultSets.getString(13));
+                            bop.setText(bop.getText().toString() + " : " + resultSets.getString(11));
                             Log.d("email_id", email_id.getText().toString());
                         }
                         int length = i;

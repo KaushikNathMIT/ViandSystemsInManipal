@@ -19,17 +19,17 @@
 
 
     <string name="action_settings">Settings</string>
-    <string name="ask_for_amount">How Much Money do u Have on your Pocket</string>
+    <string name="ask_for_amount">How Much Money do u Have on your Pocket ?</string>
     <string name="amount_in_rs">Amount in Rs.</string>
     <string name="details">Details of Hotels to be mentioned Here</string>
     <string name="enough_money">I am Rich.</string>
     <string name="admin_login">Admin_Login</string>
     <string name="homdel">I want to stay at my home</string>
-    <string name="fbhname">I have already chosen where to eat.</string>
-    <string name="danc">Developers and Contributors</string>
+    <string name="fbhname">I know my pick.</string>
+    <string name="danc">Developer and Contributor</string>
     <string name="video">Have a tutorial on how this app works</string>
-    <string name="pref_hotel">Please enter the any number of consecutive letters of your Preffered Hotel. If you remember the full name then you can type the full name</string>
-    <string name="goselproc">Find a hotel</string>
+    <string name="pref_hotel">Enter any number of consecutive letters of your professional eatery. (Enter the full name if you remember)</string>
+    <string name="goselproc">Help me Decide</string>
     <string name="log_cred">Please Enter your Login Credentials</string>
     <string name="login_hint">Enter your user name here</string>
     <string name="log_admin">Login as Administrator</string>
@@ -46,4 +46,9 @@
     <string name="eidh">Enter ID here</string>
     <string name="ech">Enter Catgory here (restaurant,bakery,cafe)</string>
     <string name="erh">Enter the minimum range here</string>
+    <string name="confail">Connection Failed. Please Check your IP</string>
+    <string name="intro">Welcome to the Viand system for Manipal</string>
+    <string name="intro2">In case you are hungry this is the perfect place to land</string>
+    <string name="ask_mood">What is your mood ?</string>
+    <string name="chli">List of Hotels for your choice</string>
 </resources>

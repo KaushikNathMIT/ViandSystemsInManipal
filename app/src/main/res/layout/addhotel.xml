@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/back2">
+    <include layout="@layout/toolbar"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint ="@string/eidh"
         android:id="@+id/eidh"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:inputType="numberDecimal"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint ="@string/enh"
         android:id="@+id/name"
         android:textSize="30sp"/>
-    <EditText
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/ech"
@@ -25,7 +28,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/erh"
         android:textSize="30sp"
-        android:id="@+id/range"/>
+        android:id="@+id/range"
+        android:inputType="numberDecimal"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,5 +50,9 @@
         android:id="@+id/add"
         android:textAlignment="center"
         android:text="Add"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:textColor="#ffffff"
+        android:background="#000000"
+        android:width="200dp"
+        android:height="60dp"/>
 </LinearLayout>

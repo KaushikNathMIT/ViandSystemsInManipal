@@ -1,12 +1,18 @@
 package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.kawanfw.sql.api.client.android.AceQLDBManager;
@@ -16,13 +22,16 @@ import org.kawanfw.sql.api.client.android.execute.update.OnUpdateCompleteListene
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kaushik Nath on 4/11/2016.
  */
-public class AddHotel extends Activity {
+public class AddHotel extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    EditText name, id, catg, ran;
+    EditText name, id, ran;
+    Spinner catg;
     Button add;
     RatingBar rat;
     String nam,cat,sql;
@@ -34,12 +43,31 @@ public class AddHotel extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addhotel);
 
+        setTitleColor(Color.parseColor("#ffffff"));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_1);
+        setSupportActionBar(toolbar);
+
         id = (EditText) findViewById(R.id.eidh);
         name = (EditText) findViewById(R.id.name);
         ran = (EditText) findViewById(R.id.range);
         rat = (RatingBar) findViewById(R.id.rate);
-        catg = (EditText) findViewById(R.id.cat);
+        catg = (Spinner) findViewById(R.id.cat);
+        catg.setOnItemSelectedListener(this);
         add = (Button) findViewById(R.id.add);
+
+        List<String> categories = new ArrayList<String>();
+        categories.add("restaurant");
+        categories.add("bakery");
+        categories.add("cafe");
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        catg.setAdapter(dataAdapter);
 
         final OnGetPrepareStatement onGetPrepareStatements = new OnGetPrepareStatement() {
             @Override
@@ -68,7 +96,7 @@ public class AddHotel extends Activity {
         final OnUpdateCompleteListener onUpdateCompleteListener = new OnUpdateCompleteListener() {
             @Override
             public void onUpdateComplete(int result, SQLException e) {
-                Toast.makeText(getApplicationContext(),"pdation Complete",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Updation Complete",Toast.LENGTH_LONG).show();
             }
         };
 
@@ -79,12 +107,21 @@ public class AddHotel extends Activity {
                 idi = Integer.parseInt(id.getText().toString());
                 range = Integer.parseInt(ran.getText().toString());
                 rate = rat.getRating();
-                cat = catg.getText().toString();
                 sql = "Insert into info_table values(" + idi + ", '" + nam + "', sysdate, '" + cat + "', " + range + ", " + Float.toString(rate) + ")";
                 Log.d("Updation Query", sql);
                 AceQLDBManager.executeUpdate(onGetPrepareStatements,onUpdateCompleteListener);
             }
         });
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        cat = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

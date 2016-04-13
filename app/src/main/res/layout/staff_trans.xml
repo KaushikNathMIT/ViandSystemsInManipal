@@ -2,12 +2,16 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:id="@+id/sr3" >
+    android:id="@+id/sr3"
+    android:background="@drawable/back2">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
+        <include layout="@layout/toolbar" />
 
         <TextView
             android:id="@+id/sta_text"
@@ -16,7 +20,10 @@
             android:layout_gravity="center_horizontal"
             android:text="Hotel Name Here"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="50sp" />
+            android:textSize="50sp"
+            android:layout_below="@+id/include2"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="49dp" />
 
         <TextView
             android:id="@+id/mgr"

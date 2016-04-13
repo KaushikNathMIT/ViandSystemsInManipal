@@ -3,11 +3,15 @@
     android:id="@+id/sr2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/back2">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
+        <include layout="@layout/toolbar"
+            android:id="@+id/include3" />
 
         <TextView
             android:id="@+id/mob"
@@ -41,10 +45,10 @@
             android:id="@+id/con_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
             android:text="Contact Info"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@+id/include3"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/pop"
@@ -60,19 +64,30 @@
             android:id="@+id/cdc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
             android:text="Credit Card"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="34dp"
+            android:layout_below="@+id/pop"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:id="@+id/debc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/cdc"
             android:text="Debit Card"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@+id/cdc"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Booking Option"
+            android:id="@+id/bop"
+            android:layout_below="@+id/debc"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="73dp" />
     </RelativeLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>

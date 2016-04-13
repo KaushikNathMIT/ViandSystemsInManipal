@@ -2,7 +2,10 @@ package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +24,7 @@ import java.sql.SQLException;
 /**
  * Created by Kaushik Nath on 4/4/2016.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
     String sql;
     String[] res = new String[30];
     int length;
@@ -29,6 +32,11 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logina);
+        setTitleColor(Color.parseColor("#ffffff"));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_1);
+        setSupportActionBar(toolbar);
+
 
         final EditText uname = (EditText) findViewById(R.id.log_uname);
         final EditText pass = (EditText) findViewById(R.id.log_pass);

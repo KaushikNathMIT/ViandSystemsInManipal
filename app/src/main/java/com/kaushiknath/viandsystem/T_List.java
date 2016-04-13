@@ -1,6 +1,7 @@
 package com.kaushiknath.viandsystem;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ public class T_List extends AppCompatActivity {
     int[] range = new int[40];
     float[] ran = new float[40];
     String[] cat = new String[40];
+    String[] bma = new String[40];
     String sql;
     int length;
 
@@ -42,9 +44,12 @@ public class T_List extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.temp_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setTitle(R.string.chli);
 
+        setTitleColor(Color.parseColor("#ffffff"));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_1);
+        setSupportActionBar(toolbar);
 
         sql = getIntent().getStringExtra("sql_q");
         Log.d("sql_query  is", sql);
@@ -110,12 +115,13 @@ public class T_List extends AppCompatActivity {
                             range[i] = resultSets.getInt(2);
                             ran[i] = resultSets.getFloat(3);
                             cat[i] = resultSets.getString(4);
+                            bma[i] = resultSets.getString(5);
                             Log.d("Length Here", Integer.toString(res[i].length()));
                             i++;
                         }
                         length = i;
                         Log.e("Status", "reached 2");
-                        Toast.makeText(getApplicationContext(),"No hotel available as per your budget", Toast.LENGTH_LONG).show();
+                        if(length == 0) Toast.makeText(getApplicationContext(),"No hotel available as per your budget", Toast.LENGTH_LONG).show();
                         //Toast.makeText(getApplicationContext(), "Actual Length" + Integer.toString(length),Toast.LENGTH_SHORT).show();
                         //Always close the Result set when your done
                         resultSets.close();
@@ -164,7 +170,7 @@ public class T_List extends AppCompatActivity {
             dataArray[i] = res[i];
         }
 
-        adapter = new RecyclerAdapter(getApplicationContext(), dataArray, range, ran, cat);
+        adapter = new RecyclerAdapter(getApplicationContext(), dataArray, range, ran, cat, bma);
         recyclerView.setAdapter(adapter);
 
         //Toast.makeText(getApplicationContext(), Integer.toString(dataArray.length), Toast.LENGTH_LONG).show();
@@ -179,12 +185,7 @@ public class T_List extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

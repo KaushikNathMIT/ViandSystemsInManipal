@@ -2,8 +2,12 @@ package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,7 +21,7 @@ import java.util.List;
 /**
  * Created by Kaushik Nath on 4/4/2016.
  */
-public class ManagerChoice extends Activity implements AdapterView.OnItemSelectedListener{
+public class ManagerChoice extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     String sel_name;
     int ida = 0;
@@ -28,6 +32,22 @@ public class ManagerChoice extends Activity implements AdapterView.OnItemSelecte
 
         Toast.makeText(getApplicationContext(), R.string.log_succ, Toast.LENGTH_LONG).show();
         setContentView(R.layout.manager);
+        setTitleColor(Color.parseColor("#ffffff"));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_1);
+        setSupportActionBar(toolbar);
+
+        SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.sr6);
+
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
+
 
         String[] hotlist = getIntent().getStringArrayExtra("hot_list");
         int length = getIntent().getIntExtra("num_hot",0);

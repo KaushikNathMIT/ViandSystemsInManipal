@@ -7,8 +7,7 @@
     card_view:cardCornerRadius="0.4dp"
     card_view:cardElevation="10dp"
     card_view:cardUseCompatPadding="true"
-    card_view:cardBackgroundColor="#00bfff"
-    >
+    card_view:cardBackgroundColor="#88ffffff" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,6 +19,7 @@
             android:layout_height="80dp"
             android:src="@mipmap/ic_launcher"
             android:id="@+id/imageView2"
+            android:background="@drawable/back2"
             />
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,8 +37,9 @@
             android:text="Rate Here"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_below="@+id/bma"
+            android:layout_alignEnd="@+id/ran"
+            android:paddingTop="10dp"/>
 
         <TextView
             android:id="@+id/ran"
@@ -47,6 +48,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Delivery Min. amount"
+            android:id="@+id/bma"
+            android:layout_below="@+id/ran"
+            android:layout_alignEnd="@+id/rate111" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

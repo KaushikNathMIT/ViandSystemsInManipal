@@ -2,8 +2,11 @@ package com.kaushiknath.viandsystem;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +23,7 @@ import java.sql.SQLException;
 /**
  * Created by Kaushik Nath on 4/4/2016.
  */
-public class StaffTransport extends Activity {
+public class StaffTransport extends AppCompatActivity {
     String sql;
     TextView mgr, wai, che, ste, vans, bikes;
 
@@ -31,6 +34,11 @@ public class StaffTransport extends Activity {
         String sel_name = getIntent().getStringExtra("sel_name");
         TextView sel_hot_name = (TextView) findViewById(R.id.sta_text);
         sel_hot_name.setText(sel_name);
+
+        setTitleColor(Color.parseColor("#ffffff"));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_1);
+        setSupportActionBar(toolbar);
 
         SwipeRefreshLayout sr3 = (SwipeRefreshLayout) findViewById(R.id.sr3);
 

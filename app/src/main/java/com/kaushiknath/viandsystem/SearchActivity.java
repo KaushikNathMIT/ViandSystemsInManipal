@@ -3,6 +3,8 @@ package com.kaushiknath.viandsystem;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +23,7 @@ import java.sql.SQLException;
 /**
  * Created by Kaushik Nath on 4/4/2016.
  */
-public class SearchActivity extends Activity {
+public class SearchActivity extends AppCompatActivity {
     Button executeB;
     //It shows the results of the query or an error if it occurs
     //TextView outputView;
@@ -36,6 +38,9 @@ public class SearchActivity extends Activity {
 
         hd = getIntent().getIntExtra("val", 0);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_1);
+        setSupportActionBar(toolbar);
+
         final EditText hotser = (EditText) findViewById(R.id.hotel_search_text);
 
 
@@ -47,7 +52,7 @@ public class SearchActivity extends Activity {
                 //Let the user know that the process has begun
                 Toast.makeText(getApplicationContext(), (getString(R.string.loading)), Toast.LENGTH_LONG).show();
                 StringBuffer sqlbuffer = new StringBuffer("");
-                sqlbuffer.append("select name,range,h_d_radius,category from info_table natural join services natural join home_delivery " +
+                sqlbuffer.append("select name,range,h_d_radius,category,min_amt from info_table natural join services natural join home_delivery " +
                         "where name like '%" + hotser.getText() + "%'");
                 if (hd == 1) {
                     sqlbuffer.append(" and h_d_radius > 0");

@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +27,7 @@ import java.sql.SQLException;
 /**
  * Created by Kaushik Nath on 4/2/2016.
  */
-public class DetailedInfo extends Activity {
+public class DetailedInfo extends AppCompatActivity {
     String sql, se;
 
     @Override
@@ -33,16 +35,25 @@ public class DetailedInfo extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.det_info);
 
+
+        setTitle("Location and cuisine Details");
+        setTitleColor(Color.parseColor("#ffffff"));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_1);
+        setSupportActionBar(toolbar);
+
+
         TextView sel = (TextView) findViewById(R.id.sel_hotel);
         se = getIntent().getStringExtra("Selected");
         sel.setText(se);
 
-        sql = "select rating,loc_name,pincode from info_table natural join loc_table natural join whereabouts " +
+        sql = "select rating,loc_name,pincode,cuisine from info_table natural join loc_table natural join whereabouts natural join type " +
                 "where name = '" + se + "'";
         final RatingBar rating = (RatingBar) findViewById(R.id.ratingBar);
         final TextView location = (TextView) findViewById(R.id.loca);
         final TextView pincode = (TextView) findViewById(R.id.pc);
         final Button order = (Button) findViewById(R.id.order_button);
+        final TextView cuisine = (TextView) findViewById(R.id.cuisine);
 
         SwipeRefreshLayout sr4 = (SwipeRefreshLayout) findViewById(R.id.sr4);
 
@@ -102,6 +113,7 @@ public class DetailedInfo extends Activity {
                             rating.setEnabled(false);
                             location.setText(location.getText().toString() + " : " + resultSets.getString(2));
                             pincode.setText(pincode.getText().toString() + " : " + resultSets.getInt(3));
+                            cuisine.setText(cuisine.getText().toString() + ":" + resultSets.getString(4));
                             Log.d("pincode", pincode.getText().toString());
                         }
                         int length = i;
